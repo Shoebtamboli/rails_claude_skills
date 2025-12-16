@@ -1,0 +1,152 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Verification script for rails_claude_skills gem
+
+require 'fileutils'
+
+puts "🔍 Verifying Rails Claude Skills Gem Structure...\n\n"
+
+errors = []
+warnings = []
+
+# Check core files
+puts "📁 Checking core files..."
+core_files = [
+  'lib/rails_claude_skills.rb',
+  'lib/rails_claude_skills/version.rb',
+  'lib/rails_claude_skills/railtie.rb',
+  'rails_claude_skills.gemspec',
+  'README.md',
+  'CHANGELOG.md',
+  'LICENSE.txt'
+]
+
+core_files.each do |file|
+  if File.exist?(file)
+    puts "  ✅ #{file}"
+  else
+    puts "  ❌ #{file} - MISSING"
+    errors << "Missing core file: #{file}"
+  end
+end
+
+# Check generators
+puts "\n📦 Checking generators..."
+generators = [
+  'lib/generators/claude/install/install_generator.rb',
+  'lib/generators/claude/skill/skill_generator.rb',
+  'lib/generators/claude/agent/agent_generator.rb',
+  'lib/generators/claude/views/views_generator.rb'
+]
+
+generators.each do |file|
+  if File.exist?(file)
+    puts "  ✅ #{file}"
+  else
+    puts "  ❌ #{file} - MISSING"
+    errors << "Missing generator: #{file}"
+  end
+end
+
+# Check templates
+puts "\n📄 Checking templates..."
+templates = [
+  'lib/generators/claude/install/templates/settings.local.json.tt',
+  'lib/generators/claude/install/templates/README.md.tt',
+  'lib/generators/claude/install/templates/USAGE',
+  'lib/generators/claude/install/templates/agents/basic-dev.md.tt',
+  'lib/generators/claude/install/templates/agents/fullstack-dev.md.tt',
+  'lib/generators/claude/install/templates/agents/api-dev.md.tt',
+  'lib/generators/claude/skill/templates/SKILL.md.tt',
+  'lib/generators/claude/agent/templates/agent.md.tt'
+]
+
+templates.each do |file|
+  if File.exist?(file)
+    puts "  ✅ #{file}"
+  else
+    puts "  ❌ #{file} - MISSING"
+    errors << "Missing template: #{file}"
+  end
+end
+
+# Check pre-built skills
+puts "\n🎯 Checking pre-built skills..."
+skills = [
+  'lib/generators/claude/skills_library/rails-models/SKILL.md',
+  'lib/generators/claude/skills_library/rails-controllers/SKILL.md',
+  'lib/generators/claude/skills_library/rails-views/SKILL.md',
+  'lib/generators/claude/skills_library/rails-hotwire/SKILL.md',
+  'lib/generators/claude/skills_library/tailwindcss/SKILL.md'
+]
+
+skills.each do |file|
+  if File.exist?(file)
+    puts "  ✅ #{file}"
+  else
+    puts "  ❌ #{file} - MISSING"
+    errors << "Missing skill: #{file}"
+  end
+end
+
+# Check tests
+puts "\n🧪 Checking tests..."
+tests = [
+  'spec/rails_claude_skills_spec.rb',
+  'spec/spec_helper.rb',
+  'spec/generators/install_generator_spec.rb',
+  'spec/generators/skill_generator_spec.rb',
+  'spec/generators/agent_generator_spec.rb'
+]
+
+tests.each do |file|
+  if File.exist?(file)
+    puts "  ✅ #{file}"
+  else
+    puts "  ⚠️  #{file} - MISSING (optional)"
+    warnings << "Missing test: #{file}"
+  end
+end
+
+# Summary
+puts "\n" + "="*60
+puts "📊 SUMMARY"
+puts "="*60
+
+if errors.empty?
+  puts "✅ All required files are present!"
+else
+  puts "❌ Found #{errors.length} error(s):"
+  errors.each { |e| puts "   - #{e}" }
+end
+
+if warnings.any?
+  puts "\n⚠️  Found #{warnings.length} warning(s):"
+  warnings.each { |w| puts "   - #{w}" }
+end
+
+puts "\n"
+
+# Try to load the gem
+puts "🔧 Attempting to load the gem..."
+begin
+  $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+  require 'rails_claude_skills'
+  puts "  ✅ Gem loaded successfully!"
+  puts "  📦 Version: #{RailsClaudeSkills::VERSION}"
+rescue => e
+  puts "  ❌ Failed to load gem: #{e.message}"
+  errors << "Gem load error: #{e.message}"
+end
+
+puts "\n"
+
+# Exit code
+if errors.empty?
+  puts "🎉 Verification complete! Gem structure is valid."
+  exit 0
+else
+  puts "⚠️  Verification complete with errors. Please fix the issues above."
+  exit 1
+end

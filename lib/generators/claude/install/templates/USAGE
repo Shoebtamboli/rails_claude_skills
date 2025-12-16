@@ -1,0 +1,27 @@
+===============================================================================
+
+Claude Skills have been installed!
+
+Your .claude/ directory has been created with:
+  - <%= options[:preset].titleize %> preset skills
+<% unless options[:skip_agents] %>  - Default <%= options[:preset] %>-dev agent<% end %>
+<% unless options[:skip_readme] %>  - README with usage instructions<% end %>
+
+Next steps:
+
+  1. Review your skills in .claude/skills/
+  
+  2. Customize any skill:
+     $ rails g claude:views <skill-name>
+  
+  3. Create custom skills:
+     $ rails g claude:skill <skill-name>
+  
+  4. Create custom agents:
+     $ rails g claude:agent <agent-name>
+
+Documentation: https://github.com/shoebtamboli/rails_claude_skills
+
+Happy coding with AI! 🚀
+
+===============================================================================

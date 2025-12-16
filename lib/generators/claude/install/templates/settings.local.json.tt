@@ -1,0 +1,13 @@
+{
+  "skills": {
+    "autoLoad": true,
+    "path": ".claude/skills"
+  },
+  "agents": {
+    "path": ".claude/agents",
+    "default": "<%= options[:preset] %>-dev"
+  },
+  "model": "sonnet",
+  "project": "<%= app_name %>",
+  "rails_version": "<%= rails_version %>"
+}

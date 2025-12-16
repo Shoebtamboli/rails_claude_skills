@@ -1,0 +1,59 @@
+# Claude Skills for <%= app_name %>
+
+This directory contains Claude AI skills and agents for this Rails project.
+
+## Structure
+
+- `skills/` - Modular skill definitions
+- `agents/` - Agent configurations that load multiple skills
+- `settings.local.json` - Claude configuration
+
+## Installed Preset
+
+**<%= options[:preset].titleize %> Preset**
+
+Skills are automatically loaded when you use Claude in this project.
+
+## Usage
+
+### Customize a skill
+
+To customize an existing skill:
+```bash
+rails g claude:views <skill-name>
+```
+
+### Create a new skill
+
+To create a custom skill:
+```bash
+rails g claude:skill <skill-name>
+```
+
+### Create an agent
+
+To create a new agent:
+```bash
+rails g claude:agent <agent-name> --skills=skill1,skill2
+```
+
+## Available Commands
+
+```bash
+# List all generators
+rails g --help | grep claude
+
+# Get help for specific generator
+rails g claude:install --help
+rails g claude:skill --help
+rails g claude:agent --help
+```
+
+## Learn More
+
+- [Rails Claude Skills Documentation](https://github.com/shoebtamboli/rails_claude_skills)
+- [Claude AI Documentation](https://docs.anthropic.com/claude/)
+
+---
+
+Generated with `rails_claude_skills` v<%= RailsClaudeSkills::VERSION %>
