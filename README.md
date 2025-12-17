@@ -92,7 +92,9 @@ rails g claude:install [options]
 |--------|----------------|
 | **basic** | rails-models, rails-controllers, rails-views |
 | **fullstack** | basic + rails-hotwire, tailwindcss, rspec-testing |
-| **api** | rails-models, rails-api-controllers, rails-serializers, rails-authentication |
+| **api** | rails-models, rails-api-controllers, rails-serializers, rails-authentication (coming soon) |
+
+**Note:** You can manually add additional skills like `rails-jobs`, `rails-mailers`, `rails-auth-with-devise`, and `rails-debugging` using the skill generator after installation.
 
 ### Skill Generator
 
@@ -175,15 +177,27 @@ rails g claude:views rails-models
 
 The gem includes these pre-built skills:
 
+### Core Rails
 - **rails-models** - ActiveRecord patterns, migrations, validations, callbacks, associations
 - **rails-controllers** - Controller actions, routing, REST conventions, filters
 - **rails-views** - ERB templates, helpers, layouts, partials
+
+### Full-Stack Development
 - **rails-hotwire** - Turbo Drive, Turbo Frames, Turbo Streams, Stimulus
 - **tailwindcss** - TailwindCSS utility-first styling
-- **rspec-testing** - RSpec testing patterns (coming soon)
-- **rails-api-controllers** - API controller patterns (coming soon)
-- **rails-serializers** - JSON serialization (coming soon)
-- **rails-authentication** - Authentication patterns (coming soon)
+- **rspec-testing** - RSpec testing patterns and best practices
+
+### Background Processing & Communication
+- **rails-jobs** - Background jobs with SolidQueue, SolidCache, SolidCable (enforces TEAM RULE #1: NEVER Sidekiq/Redis)
+- **rails-mailers** - ActionMailer for transactional and notification emails with async delivery
+
+### Authentication & Debugging
+- **rails-auth-with-devise** - Complete authentication setup with Devise, including OmniAuth and API auth
+- **rails-debugging** - Rails-specific debugging tools and systematic debugging process
+
+### Coming Soon
+- **rails-api-controllers** - API controller patterns
+- **rails-serializers** - JSON serialization
 
 ## Usage Examples
 
@@ -224,7 +238,26 @@ git pull
 # Everyone now has consistent AI context!
 ```
 
-### Example 3: Custom Domain Skills
+### Example 3: Adding Additional Pre-Built Skills
+
+```bash
+# After installing with a preset, add more skills as needed
+rails g claude:install --preset=fullstack
+
+# Add authentication with Devise
+rails g claude:views rails-auth-with-devise
+
+# Add background job processing
+rails g claude:views rails-jobs
+
+# Add email functionality
+rails g claude:views rails-mailers
+
+# Add debugging tools
+rails g claude:views rails-debugging
+```
+
+### Example 4: Custom Domain Skills
 
 ```bash
 # You have specific business logic patterns
@@ -328,8 +361,14 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] Views generator
 - [x] Basic documentation
 
-### Phase 2: Enhancement (v0.2.0)
-- [ ] Additional skills (RSpec, authentication, API, etc.)
+### Phase 2: Enhancement (v0.2.0) 🚧 In Progress
+- [x] RSpec testing skill with comprehensive patterns
+- [x] Authentication skill (rails-auth-with-devise)
+- [x] Background jobs skill (rails-jobs with SolidQueue)
+- [x] Email delivery skill (rails-mailers)
+- [x] Debugging tools skill (rails-debugging)
+- [ ] API controller patterns skill
+- [ ] Serialization skill
 - [ ] Rails version detection
 - [ ] Improved templates
 - [ ] Better error handling

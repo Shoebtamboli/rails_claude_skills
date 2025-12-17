@@ -1,5 +1,17 @@
 ## [Unreleased]
 
+### Added
+- New pre-built skills:
+  - rails-auth-with-devise (complete authentication with Devise, OmniAuth, and API auth)
+  - rails-debugging (Rails-specific debugging tools and systematic debugging process)
+  - rails-jobs (background jobs with SolidQueue, SolidCache, SolidCable - enforces TEAM RULE #1: NEVER Sidekiq/Redis)
+  - rails-mailers (ActionMailer for transactional and notification emails with async delivery)
+  - rspec-testing (comprehensive RSpec testing patterns and best practices)
+
+### Changed
+- Updated README to organize skills by category (Core Rails, Full-Stack Development, Background Processing & Communication, Authentication & Debugging)
+- Enhanced roadmap to reflect Phase 2 progress
+
 ## [0.1.0] - 2025-12-16
 
 - Initial release
