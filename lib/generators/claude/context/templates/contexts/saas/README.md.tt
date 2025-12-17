@@ -1,0 +1,92 @@
+# SaaS Context for <%= app_name %>
+
+Complete SaaS setup with subscriptions, billing, multi-tenancy, and team management.
+
+## What's Included
+
+### Skills
+- **rails-models** - Account, subscription, plan, membership models
+- **rails-controllers** - Account management, billing, team controllers
+- **rails-views** - Dashboard, settings, billing pages
+- **rails-auth-with-devise** - User authentication
+- **rails-jobs** - Background jobs for webhooks and billing
+- **rails-mailers** - Trial, payment, and team invitation emails
+
+### Agent
+- **saas-dev** - SaaS development specialist
+
+## Getting Started
+
+### 1. Install Stripe
+
+```bash
+echo "gem 'stripe'" >> Gemfile
+bundle install
+
+rails credentials:edit
+# Add: stripe: { publishable_key: xxx, secret_key: xxx, webhook_secret: xxx }
+```
+
+### 2. Generate Models
+
+```bash
+# Multi-tenancy
+rails g model Account name:string subdomain:string:uniq owner_id:integer settings:jsonb
+
+rails g model Membership account:references user:references role:string
+
+# Subscriptions
+rails g model Plan name:string price:decimal interval:string trial_days:integer \
+  stripe_price_id:string features_json:text
+
+rails g model Subscription account:references plan:references \
+  status:string stripe_subscription_id:string stripe_customer_id:string \
+  trial_ends_at:datetime current_period_start:datetime current_period_end:datetime
+```
+
+### 3. Configure Subdomain Routing
+
+```ruby
+# config/routes.rb
+Rails.application.routes.draw do
+  constraints subdomain: /.+/ do
+    # Account-scoped routes
+    resources :projects
+    resources :team_members
+    resource :billing
+  end
+
+  # Root domain routes
+  root 'marketing#index'
+  devise_for :users
+end
+```
+
+### 4. Set Up Stripe Webhooks
+
+```bash
+# Development
+stripe listen --forward-to localhost:3000/webhooks/stripe
+
+# Production - configure in Stripe Dashboard
+https://yourapp.com/webhooks/stripe
+```
+
+## Key Features
+
+- [ ] User authentication with Devise
+- [ ] Account creation and subdomain setup
+- [ ] Subscription plans (Starter, Pro, Enterprise)
+- [ ] Stripe checkout integration
+- [ ] Trial period (14 days)
+- [ ] Team member invitations
+- [ ] Role-based permissions
+- [ ] Usage tracking and limits
+- [ ] Billing management (update card, invoices)
+- [ ] Admin dashboard
+
+## Example Usage
+
+See `.claude/contexts/saas-models.md` for complete model implementations.
+
+Need help? Use the **saas-dev** agent for SaaS-specific guidance!

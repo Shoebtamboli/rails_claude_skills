@@ -1,0 +1,253 @@
+# E-commerce Context for <%= app_name %>
+
+Complete e-commerce setup with products, shopping cart, checkout, orders, and payment processing.
+
+## What's Included
+
+### Skills
+- **rails-models** - Database models for products, orders, line items
+- **rails-controllers** - Controllers for product browsing, cart, checkout
+- **rails-views** - Templates for product pages, cart, checkout flow
+- **rails-jobs** - Background jobs for order processing and emails
+- **rails-mailers** - Order confirmation and shipping notification emails
+
+### Agent
+- **ecommerce-dev** - E-commerce development specialist
+
+### Example Models
+See `.claude/contexts/ecommerce-models.md` for complete model examples including:
+- Product with variants and images
+- Category and tagging system
+- Shopping cart (session and database)
+- Order with line items
+- Payment and shipping information
+- User reviews and ratings
+
+## Getting Started
+
+### 1. Generate Core Models
+
+```bash
+# Product catalog
+rails g model Product name:string description:text price:decimal status:string \
+  stock_quantity:integer sku:string slug:string:uniq
+
+rails g model ProductVariant product:references name:string sku:string \
+  price:decimal stock_quantity:integer
+
+rails g model Category name:string slug:string:uniq parent_id:integer
+rails g model CategoryProduct product:references category:references
+
+# Shopping cart
+rails g model Cart user:references session_id:string
+rails g model CartItem cart:references product:references quantity:integer
+
+# Orders
+rails g model Order user:references total_amount:decimal status:string \
+  order_number:string:uniq
+
+rails g model LineItem order:references product:references \
+  quantity:integer price:decimal
+
+rails g model Address user:references addressable:references{polymorphic} \
+  address_type:string street:string city:string state:string \
+  postal_code:string country:string
+
+rails g model Payment order:references amount:decimal status:string \
+  payment_method:string stripe_payment_id:string
+
+# Reviews
+rails g model Review product:references user:references rating:integer \
+  title:string body:text
+```
+
+### 2. Set Up Associations
+
+Follow the examples in `.claude/contexts/ecommerce-models.md` to add:
+- Validations
+- Associations (has_many, belongs_to)
+- Scopes for common queries
+- Methods for business logic
+
+### 3. Install Payment Gem
+
+```bash
+# For Stripe
+echo "gem 'stripe'" >> Gemfile
+bundle install
+
+# Set up credentials
+rails credentials:edit
+# Add: stripe: { publishable_key: xxx, secret_key: xxx }
+```
+
+### 4. Set Up Active Storage (Product Images)
+
+```bash
+rails active_storage:install
+rails db:migrate
+
+# In production, configure cloud storage (S3, GCS, Azure)
+```
+
+### 5. Create Controllers
+
+```bash
+rails g controller Products index show
+rails g controller Cart show add_item remove_item update_quantity
+rails g controller Orders new create show index
+rails g controller Checkout shipping payment confirmation
+```
+
+### 6. Add Routes
+
+```ruby
+# config/routes.rb
+Rails.application.routes.draw do
+  resources :products, only: [:index, :show] do
+    resources :reviews, only: [:create]
+  end
+
+  resource :cart, only: [:show] do
+    post :add_item
+    delete :remove_item
+    patch :update_quantity
+  end
+
+  resources :orders, only: [:index, :show, :create]
+
+  namespace :checkout do
+    get :shipping
+    post :shipping
+    get :payment
+    post :payment
+    get :confirmation
+  end
+
+  namespace :admin do
+    resources :products
+    resources :orders
+    resources :categories
+  end
+end
+```
+
+## Key Features to Implement
+
+### 1. Product Catalog
+- [ ] Product listing with pagination
+- [ ] Product detail pages with images
+- [ ] Product variants (size, color)
+- [ ] Category browsing and filtering
+- [ ] Search functionality
+- [ ] Product reviews and ratings
+
+### 2. Shopping Cart
+- [ ] Add/remove products
+- [ ] Update quantities
+- [ ] Cart persistence (session or database)
+- [ ] Cart total calculation
+- [ ] Apply discount codes
+
+### 3. Checkout Flow
+- [ ] Multi-step checkout (cart → shipping → payment → confirmation)
+- [ ] Guest checkout vs. authenticated
+- [ ] Shipping address form
+- [ ] Payment with Stripe/PayPal
+- [ ] Order confirmation page
+
+### 4. Order Management
+- [ ] Customer order history
+- [ ] Order tracking with status updates
+- [ ] Email notifications (order placed, shipped, delivered)
+- [ ] Admin order dashboard
+- [ ] Order fulfillment workflow
+
+### 5. Inventory Management
+- [ ] Stock tracking
+- [ ] Low stock alerts
+- [ ] Automatic stock deduction on purchase
+- [ ] Backorder handling
+
+### 6. Admin Panel
+- [ ] Product CRUD
+- [ ] Order management
+- [ ] Customer management
+- [ ] Sales reports
+
+## Payment Integration Example
+
+```ruby
+# app/services/payment_service.rb
+class PaymentService
+  def initialize(order)
+    @order = order
+  end
+
+  def process_payment(payment_token)
+    charge = Stripe::Charge.create(
+      amount: (@order.total_amount * 100).to_i, # cents
+      currency: 'usd',
+      source: payment_token,
+      description: "Order ##{@order.order_number}"
+    )
+
+    @order.payments.create!(
+      amount: @order.total_amount,
+      status: :completed,
+      payment_method: 'stripe',
+      stripe_payment_id: charge.id
+    )
+
+    @order.update!(status: :processing)
+    OrderConfirmationJob.perform_later(@order.id)
+
+    { success: true, charge: charge }
+  rescue Stripe::CardError => e
+    { success: false, error: e.message }
+  end
+end
+```
+
+## Testing Checklist
+
+- [ ] Product creation and validation
+- [ ] Adding products to cart
+- [ ] Cart total calculations
+- [ ] Checkout flow (happy path)
+- [ ] Payment processing (test mode)
+- [ ] Order status transitions
+- [ ] Email delivery
+- [ ] Inventory updates after purchase
+- [ ] Webhook handling for payment events
+
+## Common Gems
+
+```ruby
+# Gemfile
+gem 'stripe'              # Payment processing
+gem 'money-rails'         # Money handling
+gem 'kaminari'            # Pagination
+gem 'friendly_id'         # Slugs for products
+gem 'acts_as_list'        # Product ordering
+gem 'ransack'             # Search and filtering
+gem 'image_processing'    # Image variants (Active Storage)
+```
+
+## Resources
+
+- [Stripe Rails Guide](https://stripe.com/docs/payments/accept-a-payment?platform=web&ui=elements)
+- [Rails E-commerce Tutorial](https://guides.rubyonrails.org/)
+- [Money-Rails Gem](https://github.com/RubyMoney/money-rails)
+- [Active Storage Guide](https://guides.rubyonrails.org/active_storage_overview.html)
+
+## Next Steps
+
+1. Review the example models in `.claude/contexts/ecommerce-models.md`
+2. Generate your models with proper associations
+3. Set up Stripe or your payment provider
+4. Build the checkout flow
+5. Test thoroughly with Stripe test mode
+6. Deploy with proper payment credentials
+
+Need help? Use the **ecommerce-dev** agent for context-specific guidance!

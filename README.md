@@ -153,6 +153,42 @@ rails g claude:agent frontend-dev \
   --color=purple
 ```
 
+### Context Generator
+
+Scaffold a complete domain-specific setup with pre-configured skills, agents, and example models:
+
+```bash
+rails g claude:context CONTEXT_NAME [options]
+```
+
+**Options:**
+- `--skip-models` - Don't generate model examples
+- `--skip-agents` - Don't create context-specific agents
+
+**Available Contexts:**
+
+| Context | Description | Skills Included |
+|---------|-------------|-----------------|
+| **ecommerce** | E-commerce store | Products, cart, orders, payments |
+| **saas** | SaaS application | Subscriptions, billing, multi-tenancy, teams |
+| **blog** | Blog platform | Posts, comments, tags, authors |
+| **social** | Social network | Users, posts, follows, feeds |
+| **api** | JSON API backend | API controllers, authentication, versioning |
+| **marketplace** | Two-sided marketplace | Buyers, sellers, transactions |
+
+**Examples:**
+
+```bash
+# Set up e-commerce context
+rails g claude:context ecommerce
+
+# Set up SaaS context without model examples
+rails g claude:context saas --skip-models
+
+# Set up API backend context
+rails g claude:context api
+```
+
 ### Views Generator
 
 Customize an existing skill by copying it to your project:
@@ -259,7 +295,30 @@ rails g claude:views rails-debugging
 rails g claude:views rails-api-controllers
 ```
 
-### Example 4: Custom Domain Skills
+### Example 4: Quick Start with Context Scaffolding
+
+```bash
+# Starting a SaaS project? Use the SaaS context
+rails new my_saas_app
+cd my_saas_app
+
+# Add the gem
+echo "gem 'rails_claude_skills', group: :development" >> Gemfile
+bundle install
+
+# Scaffold complete SaaS context
+rails g claude:context saas
+
+# This creates:
+# - All necessary skills (models, auth, jobs, mailers)
+# - saas-dev agent optimized for SaaS development
+# - Example models (Account, Subscription, Plan, Membership)
+# - Documentation with implementation guide
+
+# Now you have everything to build a SaaS app!
+```
+
+### Example 5: Custom Domain Skills
 
 ```bash
 # You have specific business logic patterns
@@ -376,11 +435,12 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [ ] Better error handling
 - [ ] More comprehensive tests
 
-### Phase 3: Ecosystem (v0.3.0)
-- [ ] Scaffold generator for contexts (ecommerce, saas, etc.)
+### Phase 3: Ecosystem (v0.3.0) 🚧 In Progress
+- [x] Context generator for domain-specific scaffolding (ecommerce, saas, blog, social, api, marketplace)
 - [ ] Integration with popular gems (Devise, Pundit, etc.)
 - [ ] Skill dependency resolution
 - [ ] Community skill repository
+- [ ] Plugin system for third-party contexts
 
 ## License
 

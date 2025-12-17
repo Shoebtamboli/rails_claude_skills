@@ -1,6 +1,10 @@
 ## [Unreleased]
 
 ### Added
+- **Context Generator**: New `rails g claude:context` command for domain-specific scaffolding
+  - 6 pre-built contexts: ecommerce, saas, blog, social, api, marketplace
+  - Each context includes relevant skills, custom agent, and example models
+  - Context-specific documentation and implementation guides
 - New pre-built skills:
   - rails-auth-with-devise (complete authentication with Devise, OmniAuth, and API auth)
   - rails-debugging (Rails-specific debugging tools and systematic debugging process)
@@ -10,8 +14,9 @@
   - rails-api-controllers (RESTful API patterns, versioning, authentication, rate limiting, CORS, pagination, API testing, and documentation)
 
 ### Changed
-- Updated README to organize skills by category (Core Rails, Full-Stack Development, Background Processing & Communication, Authentication & Debugging)
-- Enhanced roadmap to reflect Phase 2 progress
+- Updated README to organize skills by category (Core Rails, Full-Stack Development, Background Processing & Communication, Authentication & Debugging, API Development)
+- Enhanced roadmap to reflect Phase 2 and Phase 3 progress
+- Added comprehensive usage examples including context scaffolding
 
 ## [0.1.0] - 2025-12-16
 

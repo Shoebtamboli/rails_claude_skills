@@ -1,0 +1,489 @@
+# E-commerce Model Examples for <%= app_name %>
+
+Complete model implementations for an e-commerce application.
+
+## Product Models
+
+### Product
+
+```ruby
+# app/models/product.rb
+class Product < ApplicationRecord
+  # Associations
+  has_many :product_variants, dependent: :destroy
+  has_many :product_images, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :cart_items, dependent: :destroy
+  has_many :line_items, dependent: :destroy
+  has_many :category_products, dependent: :destroy
+  has_many :categories, through: :category_products
+
+  # Active Storage
+  has_many_attached :images
+
+  # Validations
+  validates :name, presence: true, length: { maximum: 255 }
+  validates :slug, presence: true, uniqueness: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :stock_quantity, numericality: { greater_than_or_equal_to: 0 }
+
+  # Enums
+  enum status: { draft: 'draft', active: 'active', archived: 'archived' }
+
+  # Scopes
+  scope :active, -> { where(status: :active) }
+  scope :in_stock, -> { where('stock_quantity > 0') }
+  scope :featured, -> { where(featured: true) }
+  scope :by_category, ->(category_id) { joins(:categories).where(categories: { id: category_id }) }
+  scope :search, ->(query) { where('name ILIKE ? OR description ILIKE ?', "%#{query}%", "%#{query}%") }
+
+  # Callbacks
+  before_validation :generate_slug, if: -> { slug.blank? }
+
+  # Instance methods
+  def in_stock?
+    stock_quantity > 0
+  end
+
+  def average_rating
+    reviews.average(:rating).to_f.round(1)
+  end
+
+  def reduce_stock!(quantity)
+    with_lock do
+      raise 'Insufficient stock' if stock_quantity < quantity
+      update!(stock_quantity: stock_quantity - quantity)
+    end
+  end
+
+  def display_price
+    Money.new(price * 100, 'USD')
+  end
+
+  private
+
+  def generate_slug
+    self.slug = name.parameterize
+  end
+end
+```
+
+### ProductVariant
+
+```ruby
+# app/models/product_variant.rb
+class ProductVariant < ApplicationRecord
+  belongs_to :product
+
+  validates :name, presence: true
+  validates :sku, presence: true, uniqueness: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :stock_quantity, numericality: { greater_than_or_equal_to: 0 }
+
+  scope :in_stock, -> { where('stock_quantity > 0') }
+
+  def in_stock?
+    stock_quantity > 0
+  end
+
+  def display_price
+    Money.new(price * 100, 'USD')
+  end
+end
+```
+
+### Category
+
+```ruby
+# app/models/category.rb
+class Category < ApplicationRecord
+  # Self-referential association for nested categories
+  belongs_to :parent, class_name: 'Category', optional: true
+  has_many :children, class_name: 'Category', foreign_key: 'parent_id'
+
+  has_many :category_products, dependent: :destroy
+  has_many :products, through: :category_products
+
+  validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
+
+  scope :root_categories, -> { where(parent_id: nil) }
+
+  def full_path
+    return name if parent.nil?
+    "#{parent.full_path} > #{name}"
+  end
+end
+```
+
+### Review
+
+```ruby
+# app/models/review.rb
+class Review < ApplicationRecord
+  belongs_to :product
+  belongs_to :user
+
+  validates :rating, presence: true, inclusion: { in: 1..5 }
+  validates :title, presence: true
+  validates :body, presence: true, length: { minimum: 10 }
+
+  scope :verified_purchase, -> { where(verified_purchase: true) }
+  scope :by_rating, ->(rating) { where(rating: rating) }
+
+  after_commit :update_product_rating, on: [:create, :update, :destroy]
+
+  private
+
+  def update_product_rating
+    product.touch # Trigger cache invalidation
+  end
+end
+```
+
+## Cart Models
+
+### Cart
+
+```ruby
+# app/models/cart.rb
+class Cart < ApplicationRecord
+  belongs_to :user, optional: true
+  has_many :cart_items, dependent: :destroy
+  has_many :products, through: :cart_items
+
+  validates :session_id, presence: true, if: -> { user_id.blank? }
+
+  def add_product(product, quantity: 1)
+    cart_item = cart_items.find_by(product: product)
+
+    if cart_item
+      cart_item.increment!(:quantity, quantity)
+    else
+      cart_items.create!(product: product, quantity: quantity)
+    end
+  end
+
+  def remove_product(product)
+    cart_items.find_by(product: product)&.destroy
+  end
+
+  def update_quantity(product, quantity)
+    cart_item = cart_items.find_by(product: product)
+    return unless cart_item
+
+    if quantity > 0
+      cart_item.update!(quantity: quantity)
+    else
+      cart_item.destroy
+    end
+  end
+
+  def subtotal
+    cart_items.sum { |item| item.quantity * item.product.price }
+  end
+
+  def total_items
+    cart_items.sum(:quantity)
+  end
+
+  def empty?
+    cart_items.empty?
+  end
+
+  def clear!
+    cart_items.destroy_all
+  end
+end
+```
+
+### CartItem
+
+```ruby
+# app/models/cart_item.rb
+class CartItem < ApplicationRecord
+  belongs_to :cart
+  belongs_to :product
+
+  validates :quantity, numericality: { greater_than: 0 }
+  validate :product_in_stock
+
+  def total_price
+    quantity * product.price
+  end
+
+  private
+
+  def product_in_stock
+    return if product.stock_quantity >= quantity
+    errors.add(:quantity, "exceeds available stock (#{product.stock_quantity} available)")
+  end
+end
+```
+
+## Order Models
+
+### Order
+
+```ruby
+# app/models/order.rb
+class Order < ApplicationRecord
+  belongs_to :user
+  has_many :line_items, dependent: :destroy
+  has_many :products, through: :line_items
+  has_many :payments, dependent: :destroy
+  has_one :shipping_address, class_name: 'Address', as: :addressable, dependent: :destroy
+  has_one :billing_address, class_name: 'Address', as: :addressable, dependent: :destroy
+
+  validates :order_number, presence: true, uniqueness: true
+  validates :total_amount, presence: true, numericality: { greater_than: 0 }
+  validates :status, presence: true
+
+  enum status: {
+    pending: 'pending',
+    processing: 'processing',
+    shipped: 'shipped',
+    delivered: 'delivered',
+    cancelled: 'cancelled',
+    refunded: 'refunded'
+  }
+
+  scope :recent, -> { order(created_at: :desc) }
+  scope :by_status, ->(status) { where(status: status) }
+
+  before_validation :generate_order_number, on: :create
+
+  # State transitions
+  after_transition to: :processing do
+    OrderProcessingJob.perform_later(id)
+  end
+
+  after_transition to: :shipped do
+    OrderMailer.shipped_notification(self).deliver_later
+  end
+
+  after_transition to: :delivered do
+    OrderMailer.delivered_notification(self).deliver_later
+  end
+
+  def self.create_from_cart(cart, user)
+    transaction do
+      order = create!(
+        user: user,
+        total_amount: cart.subtotal,
+        status: :pending
+      )
+
+      cart.cart_items.each do |cart_item|
+        order.line_items.create!(
+          product: cart_item.product,
+          quantity: cart_item.quantity,
+          price: cart_item.product.price
+        )
+
+        # Reduce inventory
+        cart_item.product.reduce_stock!(cart_item.quantity)
+      end
+
+      cart.clear!
+      order
+    end
+  end
+
+  def can_cancel?
+    pending? || processing?
+  end
+
+  def display_total
+    Money.new(total_amount * 100, 'USD')
+  end
+
+  private
+
+  def generate_order_number
+    self.order_number = "ORD-#{Time.current.to_i}-#{SecureRandom.hex(4).upcase}"
+  end
+end
+```
+
+### LineItem
+
+```ruby
+# app/models/line_item.rb
+class LineItem < ApplicationRecord
+  belongs_to :order
+  belongs_to :product
+
+  validates :quantity, presence: true, numericality: { greater_than: 0 }
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+
+  def total_price
+    quantity * price
+  end
+
+  def display_price
+    Money.new(price * 100, 'USD')
+  end
+
+  def display_total
+    Money.new(total_price * 100, 'USD')
+  end
+end
+```
+
+### Payment
+
+```ruby
+# app/models/payment.rb
+class Payment < ApplicationRecord
+  belongs_to :order
+
+  validates :amount, presence: true, numericality: { greater_than: 0 }
+  validates :payment_method, presence: true
+  validates :status, presence: true
+
+  enum status: {
+    pending: 'pending',
+    completed: 'completed',
+    failed: 'failed',
+    refunded: 'refunded'
+  }
+
+  enum payment_method: {
+    credit_card: 'credit_card',
+    paypal: 'paypal',
+    stripe: 'stripe'
+  }
+
+  after_create :send_receipt, if: :completed?
+
+  private
+
+  def send_receipt
+    PaymentMailer.receipt(self).deliver_later
+  end
+end
+```
+
+### Address
+
+```ruby
+# app/models/address.rb
+class Address < ApplicationRecord
+  belongs_to :user
+  belongs_to :addressable, polymorphic: true, optional: true
+
+  validates :address_type, :street, :city, :state, :postal_code, :country, presence: true
+
+  enum address_type: { shipping: 'shipping', billing: 'billing' }
+
+  def full_address
+    [street, city, state, postal_code, country].join(', ')
+  end
+end
+```
+
+## User Extensions
+
+```ruby
+# app/models/user.rb
+class User < ApplicationRecord
+  has_many :orders, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :addresses, dependent: :destroy
+  has_one :cart, dependent: :destroy
+
+  after_create :create_cart
+
+  def current_cart
+    cart || create_cart
+  end
+
+  def order_history
+    orders.includes(:line_items, :products).order(created_at: :desc)
+  end
+
+  def total_spent
+    orders.where(status: [:delivered, :shipped]).sum(:total_amount)
+  end
+
+  def reviewed_products
+    Product.joins(:reviews).where(reviews: { user_id: id })
+  end
+end
+```
+
+## Migrations
+
+```ruby
+# db/migrate/XXX_create_products.rb
+class CreateProducts < ActiveRecord::Migration[7.0]
+  def change
+    create_table :products do |t|
+      t.string :name, null: false
+      t.text :description
+      t.decimal :price, precision: 10, scale: 2, null: false
+      t.integer :stock_quantity, default: 0, null: false
+      t.string :sku
+      t.string :slug, null: false
+      t.string :status, default: 'draft', null: false
+      t.boolean :featured, default: false
+
+      t.timestamps
+    end
+
+    add_index :products, :slug, unique: true
+    add_index :products, :sku, unique: true
+    add_index :products, :status
+  end
+end
+
+# db/migrate/XXX_create_orders.rb
+class CreateOrders < ActiveRecord::Migration[7.0]
+  def change
+    create_table :orders do |t|
+      t.references :user, null: false, foreign_key: true
+      t.string :order_number, null: false
+      t.decimal :total_amount, precision: 10, scale: 2, null: false
+      t.string :status, default: 'pending', null: false
+
+      t.timestamps
+    end
+
+    add_index :orders, :order_number, unique: true
+    add_index :orders, :status
+  end
+end
+```
+
+## Usage Examples
+
+```ruby
+# Create a product
+product = Product.create!(
+  name: "Ruby on Rails T-Shirt",
+  description: "Comfortable cotton t-shirt",
+  price: 29.99,
+  stock_quantity: 100,
+  sku: "RAILS-TS-001",
+  status: :active
+)
+
+# Add to cart
+cart = user.current_cart
+cart.add_product(product, quantity: 2)
+
+# Create order from cart
+order = Order.create_from_cart(cart, user)
+
+# Process payment
+payment_service = PaymentService.new(order)
+result = payment_service.process_payment(stripe_token)
+
+# Update order status
+order.processing!
+order.shipped!
+order.delivered!
+```
+
+This provides a solid foundation for an e-commerce application with proper associations, validations, and business logic!

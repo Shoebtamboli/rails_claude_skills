@@ -1,0 +1,34 @@
+Description:
+    Scaffolds a complete domain-specific context with pre-configured skills,
+    agents, and example models for common application types like e-commerce,
+    SaaS, blogs, and more.
+
+Example:
+    rails generate claude:context ecommerce
+
+    This will create:
+        .claude/skills/            - Domain-specific skills (models, controllers, etc.)
+        .claude/agents/            - Context-specific agent (ecommerce-dev)
+        .claude/contexts/          - Context documentation and model examples
+
+Available Contexts:
+    ecommerce   - E-commerce store with products, cart, orders, and payments
+    saas        - SaaS application with subscriptions, billing, and multi-tenancy
+    blog        - Blog platform with posts, comments, and tags
+    social      - Social network with users, posts, follows, and feeds
+    api         - JSON API backend with authentication and versioning
+    marketplace - Two-sided marketplace with buyers, sellers, and transactions
+
+Options:
+    --skip-models   - Don't generate model examples
+    --skip-agents   - Don't create context-specific agents
+
+Examples:
+    # Set up e-commerce context
+    rails g claude:context ecommerce
+
+    # Set up SaaS context without model examples
+    rails g claude:context saas --skip-models
+
+    # Set up API context without custom agent
+    rails g claude:context api --skip-agents
