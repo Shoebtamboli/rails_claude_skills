@@ -7,6 +7,7 @@
   - rails-jobs (background jobs with SolidQueue, SolidCache, SolidCable - enforces TEAM RULE #1: NEVER Sidekiq/Redis)
   - rails-mailers (ActionMailer for transactional and notification emails with async delivery)
   - rspec-testing (comprehensive RSpec testing patterns and best practices)
+  - rails-api-controllers (RESTful API patterns, versioning, authentication, rate limiting, CORS, pagination, API testing, and documentation)
 
 ### Changed
 - Updated README to organize skills by category (Core Rails, Full-Stack Development, Background Processing & Communication, Authentication & Debugging)

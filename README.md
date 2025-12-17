@@ -195,9 +195,8 @@ The gem includes these pre-built skills:
 - **rails-auth-with-devise** - Complete authentication setup with Devise, including OmniAuth and API auth
 - **rails-debugging** - Rails-specific debugging tools and systematic debugging process
 
-### Coming Soon
-- **rails-api-controllers** - API controller patterns
-- **rails-serializers** - JSON serialization
+### API Development
+- **rails-api-controllers** - RESTful API controllers, versioning, authentication, rate limiting, CORS, pagination, and API testing
 
 ## Usage Examples
 
@@ -255,6 +254,9 @@ rails g claude:views rails-mailers
 
 # Add debugging tools
 rails g claude:views rails-debugging
+
+# Add API controller patterns (for building JSON APIs)
+rails g claude:views rails-api-controllers
 ```
 
 ### Example 4: Custom Domain Skills
@@ -367,8 +369,8 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] Background jobs skill (rails-jobs with SolidQueue)
 - [x] Email delivery skill (rails-mailers)
 - [x] Debugging tools skill (rails-debugging)
-- [ ] API controller patterns skill
-- [ ] Serialization skill
+- [x] API controller patterns skill (rails-api-controllers)
+- [ ] Serialization skill (rails-serializers)
 - [ ] Rails version detection
 - [ ] Improved templates
 - [ ] Better error handling
