@@ -238,6 +238,9 @@ The gem includes these pre-built skills:
 ### API Development
 - **rails-api-controllers** - RESTful API controllers, versioning, authentication, rate limiting, CORS, pagination, and API testing
 
+### UI Components
+- **rails-pagination-kaminari** - Pagination with Kaminari, including themes, API pagination, infinite scroll, and performance optimization
+
 ## Usage Examples
 
 ### Example 1: New Rails Project Setup
@@ -300,6 +303,9 @@ rails g claude:views rails-debugging
 
 # Add API controller patterns (for building JSON APIs)
 rails g claude:views rails-api-controllers
+
+# Add pagination with Kaminari
+rails g claude:views rails-pagination-kaminari
 ```
 
 ### Example 4: Quick Start with Context Scaffolding
@@ -433,6 +439,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] RSpec testing skill with comprehensive patterns
 - [x] Authentication skill (rails-auth-with-devise)
 - [x] Authorization skill (rails-authorization-cancancan)
+- [x] Pagination skill (rails-pagination-kaminari)
 - [x] Background jobs skill (rails-jobs with SolidQueue)
 - [x] Email delivery skill (rails-mailers)
 - [x] Debugging tools skill (rails-debugging)
@@ -445,7 +452,8 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 
 ### Phase 3: Ecosystem (v0.3.0) 🚧 In Progress
 - [x] Context generator for domain-specific scaffolding (ecommerce, saas, blog, social, api, marketplace)
-- [x] Integration with popular gems (Devise, CanCanCan)
+- [x] Integration with popular gems (Devise, CanCanCan, Kaminari)
+- [ ] Integration with more gems (Pundit, ActiveAdmin, etc.)
 - [ ] Skill dependency resolution
 - [ ] Community skill repository
 - [ ] Plugin system for third-party contexts
