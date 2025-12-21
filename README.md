@@ -1,6 +1,7 @@
 # Rails Claude Skills
 
 [![Gem Version](https://badge.fury.io/rb/rails_claude_skills.svg)](https://badge.fury.io/rb/rails_claude_skills)
+[![CI](https://github.com/shoebtamboli/rails_claude_skills/actions/workflows/ci.yml/badge.svg)](https://github.com/shoebtamboli/rails_claude_skills/actions/workflows/ci.yml)
 
 A Rails generator gem that scaffolds Claude AI skills and agents for any Rails project, making AI-assisted development reusable and distributable.
 
