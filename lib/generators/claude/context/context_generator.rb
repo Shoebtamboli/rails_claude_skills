@@ -15,46 +15,46 @@ module Claude
       AVAILABLE_CONTEXTS = {
         "ecommerce" => {
           description: "E-commerce store with products, cart, orders, and payments",
-          skills: ["rails-models", "rails-controllers", "rails-views", "rails-jobs", "rails-mailers"],
+          skills: %w[rails-models rails-controllers rails-views rails-jobs rails-mailers],
           agent: "ecommerce-dev"
         },
         "saas" => {
           description: "SaaS application with subscriptions, billing, and multi-tenancy",
-          skills: ["rails-models", "rails-controllers", "rails-views", "rails-auth-with-devise",
-                   "rails-jobs", "rails-mailers"],
+          skills: %w[rails-models rails-controllers rails-views rails-auth-with-devise
+                     rails-jobs rails-mailers],
           agent: "saas-dev"
         },
         "blog" => {
           description: "Blog platform with posts, comments, and tags",
-          skills: ["rails-models", "rails-controllers", "rails-views", "rails-hotwire", "tailwindcss"],
+          skills: %w[rails-models rails-controllers rails-views rails-hotwire tailwindcss],
           agent: "blog-dev"
         },
         "social" => {
           description: "Social network with users, posts, follows, and feeds",
-          skills: ["rails-models", "rails-controllers", "rails-views", "rails-hotwire",
-                   "rails-jobs", "rails-mailers"],
+          skills: %w[rails-models rails-controllers rails-views rails-hotwire
+                     rails-jobs rails-mailers],
           agent: "social-dev"
         },
         "api" => {
           description: "JSON API backend with authentication and versioning",
-          skills: ["rails-models", "rails-api-controllers", "rails-auth-with-devise", "rspec-testing"],
+          skills: %w[rails-models rails-api-controllers rails-auth-with-devise rspec-testing],
           agent: "api-dev"
         },
         "marketplace" => {
           description: "Two-sided marketplace with buyers, sellers, and transactions",
-          skills: ["rails-models", "rails-controllers", "rails-views", "rails-auth-with-devise",
-                   "rails-jobs", "rails-mailers"],
+          skills: %w[rails-models rails-controllers rails-views rails-auth-with-devise
+                     rails-jobs rails-mailers],
           agent: "marketplace-dev"
         }
       }.freeze
 
       def validate_context
-        unless AVAILABLE_CONTEXTS.key?(file_name)
-          say "Context '#{file_name}' not found", :red
-          say "\nAvailable contexts:", :blue
-          list_available_contexts
-          exit(1)
-        end
+        return if AVAILABLE_CONTEXTS.key?(file_name)
+
+        say "Context '#{file_name}' not found", :red
+        say "\nAvailable contexts:", :blue
+        list_available_contexts
+        exit(1)
       end
 
       def show_context_info
@@ -112,9 +112,9 @@ module Claude
         context_source = "#{self.class.source_root}/contexts/#{file_name}"
         models_file = "#{context_source}/models.md.tt"
 
-        if File.exist?(models_file)
-          template models_file, ".claude/contexts/#{file_name}-models.md"
-        end
+        return unless File.exist?(models_file)
+
+        template models_file, ".claude/contexts/#{file_name}-models.md"
       end
 
       def show_next_steps
