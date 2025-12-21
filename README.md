@@ -227,8 +227,11 @@ The gem includes these pre-built skills:
 - **rails-jobs** - Background jobs with SolidQueue, SolidCache, SolidCable (enforces TEAM RULE #1: NEVER Sidekiq/Redis)
 - **rails-mailers** - ActionMailer for transactional and notification emails with async delivery
 
-### Authentication & Debugging
+### Authentication & Authorization
 - **rails-auth-with-devise** - Complete authentication setup with Devise, including OmniAuth and API auth
+- **rails-authorization-cancancan** - Authorization and permissions management with CanCanCan, including RBAC, multi-tenancy, and API authorization
+
+### Debugging
 - **rails-debugging** - Rails-specific debugging tools and systematic debugging process
 
 ### API Development
@@ -281,6 +284,9 @@ rails g claude:install --preset=fullstack
 
 # Add authentication with Devise
 rails g claude:views rails-auth-with-devise
+
+# Add authorization with CanCanCan
+rails g claude:views rails-authorization-cancancan
 
 # Add background job processing
 rails g claude:views rails-jobs
@@ -425,6 +431,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 ### Phase 2: Enhancement (v0.2.0) 🚧 In Progress
 - [x] RSpec testing skill with comprehensive patterns
 - [x] Authentication skill (rails-auth-with-devise)
+- [x] Authorization skill (rails-authorization-cancancan)
 - [x] Background jobs skill (rails-jobs with SolidQueue)
 - [x] Email delivery skill (rails-mailers)
 - [x] Debugging tools skill (rails-debugging)
@@ -437,7 +444,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 
 ### Phase 3: Ecosystem (v0.3.0) 🚧 In Progress
 - [x] Context generator for domain-specific scaffolding (ecommerce, saas, blog, social, api, marketplace)
-- [ ] Integration with popular gems (Devise, Pundit, etc.)
+- [x] Integration with popular gems (Devise, CanCanCan)
 - [ ] Skill dependency resolution
 - [ ] Community skill repository
 - [ ] Plugin system for third-party contexts
