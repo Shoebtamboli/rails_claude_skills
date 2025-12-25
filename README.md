@@ -53,22 +53,29 @@ your-rails-app/
 ├── .claude/
 │   ├── settings.local.json
 │   ├── README.md
-│   ├── skills/
+│   ├── skills/           # Reusable AI knowledge modules
 │   │   ├── rails-models/
 │   │   ├── rails-controllers/
 │   │   └── rails-views/
-│   └── agents/
+│   ├── commands/         # Custom slash commands
+│   │   └── dbchange.md
+│   ├── rules/            # Project-specific guidelines
+│   │   ├── code-style.md
+│   │   ├── testing.md
+│   │   └── database.md
+│   └── agents/           # AI agent definitions
 │       └── basic-dev.md
 ```
 
-### 2. Use the Skills with Claude
+### 2. Use with Claude Code
 
-The skills are automatically loaded when you use Claude AI in your project. Claude will have deep knowledge of:
-- Rails patterns and conventions
-- ActiveRecord best practices
-- Controller and routing patterns
-- View helpers and templates
-- And more based on your chosen preset
+When you use Claude Code in your project, it automatically loads:
+- **Skills** - Reusable knowledge modules for Rails patterns and conventions
+- **Commands** - Custom slash commands for common workflows (e.g., `/dbchange`, `/quality`)
+- **Rules** - Project-specific guidelines Claude follows when writing code
+- **Agents** - Pre-configured AI assistants for different tasks
+
+Claude will have deep knowledge of your tech stack and follow your team's conventions!
 
 ## Available Generators
 
@@ -89,13 +96,17 @@ rails g claude:install [options]
 
 **Presets Include:**
 
-| Preset | Skills Included |
-|--------|----------------|
-| **basic** | rails-models, rails-controllers, rails-views |
-| **fullstack** | basic + rails-hotwire, tailwindcss, rspec-testing |
-| **api** | rails-models, rails-api-controllers, rails-serializers, rails-authentication (coming soon) |
+| Preset | Skills | Commands | Rules |
+|--------|--------|----------|-------|
+| **basic** | rails-models, rails-controllers, rails-views | dbchange | code-style, testing, database |
+| **fullstack** | basic + rails-hotwire, tailwindcss, rspec-testing | basic + quality, turbo-feature, stimulus, create-pr | basic + hotwire, security |
+| **api** | rails-models, rails-api-controllers, rails-serializers | dbchange, quality | code-style, testing, security, database |
 
-**Note:** You can manually add additional skills like `rails-jobs`, `rails-mailers`, `rails-auth-with-devise`, and `rails-debugging` using the skill generator after installation.
+Each preset includes:
+- ✅ **Skills** for Rails patterns and best practices
+- ✅ **Commands** for common development workflows
+- ✅ **Rules** for code quality and conventions
+- ✅ **Agent** pre-configured for the stack
 
 ### Skill Generator
 
@@ -190,56 +201,139 @@ rails g claude:context saas --skip-models
 rails g claude:context api
 ```
 
-### Views Generator
+### Command Generator
 
-Customize an existing skill by copying it to your project:
+Create custom slash commands for common workflows:
 
 ```bash
-rails g claude:views SKILL_NAME
+rails g claude:command NAME [options]
 ```
 
-This copies the skill from the gem to your project, allowing you to customize it for your team's specific needs.
+**Options:**
+- `--description=TEXT` - Command description
+- `--argument-hint=HINT` - Argument usage hint
+- `--allowed-tools=TOOLS` - Comma-separated list of allowed tools
 
-**Example:**
+**Examples:**
 
 ```bash
-# Customize the rails-models skill
+# Create a deploy command
+rails g claude:command deploy \
+  --description="Deploy to production" \
+  --argument-hint="[environment]" \
+  --allowed-tools="Bash, Read"
+
+# Usage: /deploy staging
+```
+
+### Rule Generator
+
+Create project-specific rules and guidelines:
+
+```bash
+rails g claude:rule NAME [options]
+```
+
+**Options:**
+- `--paths=PATHS` - File paths where rule applies (comma-separated glob patterns)
+- `--template=TYPE` - Template type (generic, testing, security, performance)
+
+**Examples:**
+
+```bash
+# Create API design rules
+rails g claude:rule api-design \
+  --paths="app/controllers/api/**/*" \
+  --template=security
+
+# Create performance rules
+rails g claude:rule performance \
+  --template=performance
+```
+
+### Views Generator
+
+Customize pre-built skills, commands, or rules by copying them to your project:
+
+```bash
+rails g claude:views NAME [options]
+```
+
+**Options:**
+- `--type=TYPE` - Resource type: skill (default), command, rule
+
+**Examples:**
+
+```bash
+# Customize a skill
 rails g claude:views rails-models
 
-# Now edit .claude/skills/rails-models/SKILL.md
+# Customize a command
+rails g claude:views quality --type=command
+
+# Customize a rule
+rails g claude:views security --type=rule
+
 # Your changes will override the gem's default version
 ```
 
-## Pre-Built Skills
+## Pre-Built Resources
 
-The gem includes these pre-built skills:
+### Skills
 
-### Core Rails
+The gem includes 20+ pre-built skills organized by category:
+
+**Rails Core**
 - **rails-models** - ActiveRecord patterns, migrations, validations, callbacks, associations
 - **rails-controllers** - Controller actions, routing, REST conventions, filters
 - **rails-views** - ERB templates, helpers, layouts, partials
-
-### Full-Stack Development
 - **rails-hotwire** - Turbo Drive, Turbo Frames, Turbo Streams, Stimulus
+- **rails-api-controllers** - RESTful API controllers, versioning, authentication, rate limiting
+
+**Authentication & Authorization**
+- **rails-auth-with-devise** - Complete authentication setup with Devise, including OmniAuth
+- **rails-authorization-cancancan** - Authorization and permissions with CanCanCan
+
+**Frontend**
 - **tailwindcss** - TailwindCSS utility-first styling
+- **rails-pagination-kaminari** - Pagination with Kaminari
+
+**Background Jobs & Communication**
+- **rails-jobs** - Background jobs with SolidQueue, SolidCache, SolidCable
+- **rails-mailers** - ActionMailer for transactional and notification emails
+
+**Testing**
 - **rspec-testing** - RSpec testing patterns and best practices
+- **minitest-testing** - Minitest tests for models, controllers, and system tests
 
-### Background Processing & Communication
-- **rails-jobs** - Background jobs with SolidQueue, SolidCache, SolidCable (enforces TEAM RULE #1: NEVER Sidekiq/Redis)
-- **rails-mailers** - ActionMailer for transactional and notification emails with async delivery
+**Utilities**
+- **rails-debugging** - Rails-specific debugging tools
+- **rails-deployment** - Deploy Rails apps (Kamal, Heroku, custom servers)
 
-### Authentication & Authorization
-- **rails-auth-with-devise** - Complete authentication setup with Devise, including OmniAuth and API auth
-- **rails-authorization-cancancan** - Authorization and permissions management with CanCanCan, including RBAC, multi-tenancy, and API authorization
+**Planning & Organization**
+- **plan-feature** - Systematically gather requirements and create implementation plans
+- **refine-requirements** - Clarify and improve feature requirements
+- **create-task-files** - Export tasks to structured markdown files
 
-### Debugging
-- **rails-debugging** - Rails-specific debugging tools and systematic debugging process
+### Commands
 
-### API Development
-- **rails-api-controllers** - RESTful API controllers, versioning, authentication, rate limiting, CORS, pagination, and API testing
+Pre-built slash commands for common workflows:
 
-### UI Components
-- **rails-pagination-kaminari** - Pagination with Kaminari, including themes, API pagination, infinite scroll, and performance optimization
+- **/quality** - Run RuboCop, Brakeman, and security audits
+- **/turbo-feature** - Build Hotwire-powered features following best practices
+- **/dbchange** - Generate database migrations with safety checks
+- **/stimulus** - Generate Stimulus controllers with proper setup
+- **/create-pr** - Create branch, commit, and open pull request
+
+### Rules
+
+Pre-built project guidelines:
+
+- **code-style** - Ruby and Rails style conventions
+- **testing** - Test structure and best practices
+- **security** - Security guidelines and vulnerability prevention
+- **database** - Database and ActiveRecord patterns
+- **hotwire** - Turbo and Stimulus guidelines
 
 ## Usage Examples
 
@@ -395,15 +489,24 @@ your-rails-app/
 ├── .claude/
 │   ├── settings.local.json          # Claude configuration
 │   ├── README.md                     # Usage instructions
-│   ├── agents/                       # Agent definitions
-│   │   └── fullstack-dev.md
-│   └── skills/                       # Skill modules
-│       ├── rails-models/
-│       │   └── SKILL.md
-│       ├── rails-controllers/
-│       │   └── SKILL.md
-│       └── rails-views/
-│           └── SKILL.md
+│   ├── skills/                       # Reusable knowledge modules
+│   │   ├── rails-models/
+│   │   │   ├── SKILL.md
+│   │   │   └── references/          # Optional reference materials
+│   │   ├── rails-controllers/
+│   │   │   └── SKILL.md
+│   │   └── rails-views/
+│   │       └── SKILL.md
+│   ├── commands/                     # Custom slash commands
+│   │   ├── dbchange.md              # /dbchange command
+│   │   ├── quality.md               # /quality command
+│   │   └── turbo-feature.md         # /turbo-feature command
+│   ├── rules/                        # Project guidelines
+│   │   ├── code-style.md            # Ruby/Rails style rules
+│   │   ├── testing.md               # Testing standards
+│   │   └── database.md              # Database conventions
+│   └── agents/                       # AI agent definitions
+│       └── fullstack-dev.md
 ```
 
 ## Development
@@ -435,7 +538,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] Views generator
 - [x] Basic documentation
 
-### Phase 2: Enhancement (v0.2.0) 🚧 In Progress
+### Phase 2: Enhancement (v0.2.0) ✅ Complete
 - [x] RSpec testing skill with comprehensive patterns
 - [x] Authentication skill (rails-auth-with-devise)
 - [x] Authorization skill (rails-authorization-cancancan)
@@ -444,19 +547,23 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] Email delivery skill (rails-mailers)
 - [x] Debugging tools skill (rails-debugging)
 - [x] API controller patterns skill (rails-api-controllers)
-- [ ] Serialization skill (rails-serializers)
-- [ ] Rails version detection
-- [ ] Improved templates
-- [ ] Better error handling
-- [ ] More comprehensive tests
+- [x] Minitest testing skill
+- [x] Rails deployment skill
+- [x] Planning and organization skills (plan-feature, refine-requirements, create-task-files)
+- [x] Command generator for custom slash commands
+- [x] Rule generator for project guidelines
+- [x] Pre-built commands library (5 commands)
+- [x] Pre-built rules library (5 rules)
 
-### Phase 3: Ecosystem (v0.3.0) 🚧 In Progress
+### Phase 3: Ecosystem (v0.3.0) 📋 Planned
 - [x] Context generator for domain-specific scaffolding (ecommerce, saas, blog, social, api, marketplace)
 - [x] Integration with popular gems (Devise, CanCanCan, Kaminari)
+- [ ] Serialization skill (rails-serializers)
 - [ ] Integration with more gems (Pundit, ActiveAdmin, etc.)
 - [ ] Skill dependency resolution
 - [ ] Community skill repository
 - [ ] Plugin system for third-party contexts
+- [ ] Rails version detection and compatibility
 
 ## License
 
