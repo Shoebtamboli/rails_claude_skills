@@ -110,9 +110,14 @@ RAILS_VERSION=7.2 bundle exec rspec
    - **ViewsGenerator**: Copies skills, commands, or rules from gem to project for customization
 
 3. **Skills Library** (`lib/generators/claude/skills_library/`)
-   - Pre-built skills stored as directories with `SKILL.md` and optional `references/`
-   - Available skills: rails-models, rails-controllers, rails-views, rails-hotwire, tailwindcss,
-     rspec-testing, rails-jobs, rails-mailers, rails-auth-with-devise, rails-debugging, rails-api-controllers
+   - Pre-built skills stored as directories with `SKILL.md` and optional `references/` or `templates/`
+   - **Rails Core**: rails-models, rails-controllers, rails-views, rails-api-controllers, rails-hotwire
+   - **Authentication & Authorization**: rails-auth-with-devise, rails-authorization-cancancan
+   - **Frontend**: tailwindcss
+   - **Background Jobs & Email**: rails-jobs, rails-mailers
+   - **Testing**: rspec-testing, minitest-testing
+   - **Utilities**: rails-debugging, rails-pagination-kaminari, rails-deployment
+   - **Planning & Organization**: plan-feature, refine-requirements, create-task-files
 
 4. **Commands Library** (`lib/generators/claude/commands_library/`)
    - Pre-built commands stored as markdown files with YAML frontmatter
