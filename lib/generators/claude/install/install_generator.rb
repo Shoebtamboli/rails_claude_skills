@@ -18,6 +18,8 @@ module Claude
         empty_directory ".claude"
         empty_directory ".claude/skills"
         empty_directory ".claude/agents" unless options[:skip_agents]
+        empty_directory ".claude/commands"
+        empty_directory ".claude/rules"
       end
 
       def copy_settings
@@ -50,6 +52,10 @@ module Claude
         install_skill("rails-models")
         install_skill("rails-controllers")
         install_skill("rails-views")
+        install_command("dbchange")
+        install_rule("code-style")
+        install_rule("testing")
+        install_rule("database")
         create_basic_agent unless options[:skip_agents]
       end
 
@@ -59,6 +65,12 @@ module Claude
         install_skill("rails-hotwire")
         install_skill("tailwindcss")
         install_skill("rspec-testing")
+        install_command("quality")
+        install_command("turbo-feature")
+        install_command("stimulus")
+        install_command("create-pr")
+        install_rule("hotwire")
+        install_rule("security")
         create_fullstack_agent unless options[:skip_agents]
       end
 
@@ -68,6 +80,12 @@ module Claude
         install_skill("rails-api-controllers")
         install_skill("rails-serializers")
         install_skill("rails-authentication")
+        install_command("dbchange")
+        install_command("quality")
+        install_rule("code-style")
+        install_rule("testing")
+        install_rule("security")
+        install_rule("database")
         create_api_agent unless options[:skip_agents]
       end
 
@@ -80,6 +98,28 @@ module Claude
           directory skill_source, skill_dir
         else
           create_file "#{skill_dir}/SKILL.md", default_skill_content(skill_name)
+        end
+      end
+
+      def install_command(command_name)
+        command_file = ".claude/commands/#{command_name}.md"
+        command_source = File.expand_path("../commands_library/#{command_name}.md", __dir__)
+
+        if File.exist?(command_source)
+          copy_file command_source, command_file
+        else
+          create_file command_file, default_command_content(command_name)
+        end
+      end
+
+      def install_rule(rule_name)
+        rule_file = ".claude/rules/#{rule_name}.md"
+        rule_source = File.expand_path("../rules_library/#{rule_name}.md", __dir__)
+
+        if File.exist?(rule_source)
+          copy_file rule_source, rule_file
+        else
+          create_file rule_file, default_rule_content(rule_name)
         end
       end
 
@@ -116,6 +156,39 @@ module Claude
           rails g claude:views #{skill_name}
           ```
         SKILL
+      end
+
+      def default_command_content(command_name)
+        <<~COMMAND
+          ---
+          description: #{command_name.titleize} command
+          allowed-tools: Bash, Read, Edit, Write
+          ---
+
+          ## #{command_name.titleize}
+
+          Add your command instructions here.
+
+          Use $ARGUMENTS to reference command arguments.
+        COMMAND
+      end
+
+      def default_rule_content(rule_name)
+        <<~RULE
+          # #{rule_name.titleize} Rules
+
+          Add your project rules and guidelines here.
+
+          ## Overview
+
+          Describe the purpose of these rules.
+
+          ## Guidelines
+
+          - Add specific guidelines
+          - Include best practices
+          - Document conventions
+        RULE
       end
 
       def app_name

@@ -1,0 +1,7 @@
+<% if paths? %>---
+paths: <%= options[:paths] %>
+---
+
+<% end %># <%= file_name.titleize %> Rules
+
+<%= rule_content %>

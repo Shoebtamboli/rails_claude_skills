@@ -1,0 +1,28 @@
+---
+description: <%= command_description %>
+<% if argument_hint %>argument-hint: <%= argument_hint %><% end %>
+allowed-tools: <%= allowed_tools %>
+---
+
+## <%= file_name.titleize %>
+
+Add your command instructions here.
+
+Use $ARGUMENTS to reference all arguments passed to the command.
+Use $1, $2, etc. to reference specific arguments by position.
+
+### Example Usage
+
+```
+/<%= file_name %> <%= argument_hint %>
+```
+
+### Steps
+
+1. Step 1
+2. Step 2
+3. Step 3
+
+### Notes
+
+Add any important notes or considerations here.
