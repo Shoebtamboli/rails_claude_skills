@@ -82,7 +82,7 @@ Related to #<!-- issue number -->
 ### Documentation
 
 - [ ] I have updated the README (if needed)
-- [ ] I have updated the CHANGELOG.md
+- [ ] **I have added my changes to the `[Unreleased]` section in CHANGELOG.md**
 - [ ] My skill/command/rule includes clear documentation
 - [ ] I have included examples where applicable
 - [ ] Frontmatter is valid YAML (for skills/commands/rules)

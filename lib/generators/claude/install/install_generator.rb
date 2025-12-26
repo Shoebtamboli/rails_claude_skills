@@ -124,7 +124,7 @@ module Claude
       end
 
       def create_basic_agent
-        template "agents/basic-dev.md.tt", ".claude/agents/basic-dev.md"
+        template "agents/rails-developer.md.tt", ".claude/agents/rails-developer.md"
       end
 
       def create_fullstack_agent

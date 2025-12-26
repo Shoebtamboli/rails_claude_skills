@@ -1,8 +1,19 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+For detailed release notes with auto-generated commit history, see [GitHub Releases](https://github.com/Shoebtamboli/rails_claude_skills/releases).
+
 ## [Unreleased]
 
-## [0.1.0] - 2024-12-26
+No unreleased changes yet.
 
-### Initial Release
+## [0.1.0] - Unreleased
+
+### Initial Release (Preparing for Publication)
 
 A Rails generator gem that scaffolds Claude AI skills and agents for Rails projects, making AI-assisted development reusable and distributable.
 
@@ -64,9 +75,9 @@ A Rails generator gem that scaffolds Claude AI skills and agents for Rails proje
 - hotwire (Hotwire conventions)
 
 ### Pre-built Agents
-- basic-dev (models, controllers, views)
-- fullstack-dev (all skills including Hotwire and Tailwind)
-- api-dev (API-focused development)
+- rails-developer (Rails MVC development with models, controllers, views)
+- fullstack-dev (Modern full-stack with Hotwire, TailwindCSS, RSpec)
+- api-dev (API-focused development with authentication)
 
 ### Features
 - Configuration system with settings.local.json
@@ -74,3 +85,11 @@ A Rails generator gem that scaffolds Claude AI skills and agents for Rails proje
 - Three installation presets (basic, fullstack, api)
 - Comprehensive documentation and examples
 - CI/CD with GitHub Actions
+
+### Documentation & Community
+- Comprehensive README with usage examples
+- CONTRIBUTING.md with detailed contribution guidelines
+- Issue templates (bug report, feature request, question)
+- Pull request template with comprehensive checklist
+- Code of Conduct (Contributor Covenant 2.1)
+- CHANGELOG following Keep a Changelog format

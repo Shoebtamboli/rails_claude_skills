@@ -382,7 +382,32 @@ rails g claude:views my-new-skill
 
 ## Submitting Changes
 
-### 1. Commit Your Changes
+### 1. Update CHANGELOG.md
+
+Add your changes to the `[Unreleased]` section of CHANGELOG.md:
+
+```markdown
+## [Unreleased]
+
+### Added
+- New skill: rails-action-mailer
+
+### Fixed
+- Install generator typo in basic preset
+
+### Changed
+- Simplified skill generator templates
+```
+
+Use these categories:
+- **Added** - New features, skills, commands, rules
+- **Changed** - Changes to existing functionality
+- **Deprecated** - Soon-to-be removed features
+- **Removed** - Removed features
+- **Fixed** - Bug fixes
+- **Security** - Security improvements
+
+### 2. Commit Your Changes
 
 ```bash
 # Stage your changes
@@ -398,13 +423,13 @@ git commit -m "Add skill for ActionMailer patterns"
 - `Docs: Improve README installation section`
 - `Refactor: Simplify skill generator templates`
 
-### 2. Push to Your Fork
+### 3. Push to Your Fork
 
 ```bash
 git push origin feature/my-new-skill
 ```
 
-### 3. Create Pull Request
+### 4. Create Pull Request
 
 - Go to the original repository on GitHub
 - Click "Pull Request"
@@ -432,7 +457,7 @@ Brief description of what this PR does
 Show the generated files or output
 ```
 
-### 4. Respond to Feedback
+### 5. Respond to Feedback
 
 - Be open to suggestions
 - Make requested changes promptly
