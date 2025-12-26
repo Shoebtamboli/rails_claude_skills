@@ -106,7 +106,6 @@ RAILS_VERSION=7.2 bundle exec rspec
    - **AgentGenerator**: Creates agents that combine multiple skills
    - **CommandGenerator**: Creates custom Claude Code commands (slash commands)
    - **RuleGenerator**: Creates project-specific rules with templates (generic, testing, security, performance)
-   - **ContextGenerator**: Scaffolds complete domain setups (ecommerce, saas, blog, social, api, marketplace)
    - **ViewsGenerator**: Copies skills, commands, or rules from gem to project for customization
 
 3. **Skills Library** (`lib/generators/claude/skills_library/`)
@@ -149,19 +148,6 @@ RAILS_VERSION=7.2 bundle exec rspec
 - Skills: rails-models, rails-api-controllers, rails-serializers, rails-authentication
 - Commands: dbchange, quality
 - Rules: code-style, testing, security, database
-
-### Context Generator Design
-
-The ContextGenerator (lib/generators/claude/context/context_generator.rb:15-49) defines six available contexts, each with:
-- Description
-- List of skills to install
-- Associated agent name
-- Template files in `lib/generators/claude/context/templates/contexts/<name>/`
-
-Template structure for each context:
-- `agent.md.tt` - Agent definition
-- `README.md.tt` - Context documentation
-- `models.md.tt` - Example model definitions
 
 ### Resource Structures
 
@@ -226,16 +212,6 @@ paths: app/models/**/*,db/**/*
 3. Write rule content with guidelines and best practices
 4. Update preset definitions in `install_generator.rb` if rule should be part of a preset
 5. Test with `rails g claude:views <rule-name> --type=rule`
-
-### Adding a New Context
-
-1. Add context definition to `AVAILABLE_CONTEXTS` hash in `context_generator.rb`
-2. Create directory `lib/generators/claude/context/templates/contexts/<context-name>/`
-3. Create template files:
-   - `agent.md.tt` - Agent configuration
-   - `README.md.tt` - Context documentation
-   - `models.md.tt` - Example models (optional)
-4. Test with `rails g claude:context <context-name>`
 
 ### Adding a New Generator
 
@@ -310,15 +286,11 @@ Generator methods execute in the order they're defined in the class. This is cri
 
 ### Skill Installation Logic
 
-The `install_skill` method (used by both InstallGenerator and ContextGenerator):
+The `install_skill` method (used by InstallGenerator):
 1. Creates `.claude/skills/<skill-name>` directory
 2. Checks if skill exists in `lib/generators/claude/skills_library/`
 3. If found, copies entire directory to project
 4. If not found, creates placeholder SKILL.md or shows warning
-
-### Context Generator Validation
-
-ContextGenerator validates context name against `AVAILABLE_CONTEXTS` hash before proceeding. Invalid contexts cause early exit with helpful error message listing available options.
 
 ### Template Resolution
 

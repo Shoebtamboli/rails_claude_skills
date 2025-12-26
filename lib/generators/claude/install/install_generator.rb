@@ -78,8 +78,8 @@ module Claude
         say "Installing API preset...", :green
         install_skill("rails-models")
         install_skill("rails-api-controllers")
-        install_skill("rails-serializers")
-        install_skill("rails-authentication")
+        install_skill("rails-auth-with-devise")
+        install_skill("rspec-testing")
         install_command("dbchange")
         install_command("quality")
         install_rule("code-style")

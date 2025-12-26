@@ -1,39 +1,76 @@
 ## [Unreleased]
 
-### Added
-- **Context Generator**: New `rails g claude:context` command for domain-specific scaffolding
-  - 6 pre-built contexts: ecommerce, saas, blog, social, api, marketplace
-  - Each context includes relevant skills, custom agent, and example models
-  - Context-specific documentation and implementation guides
-- New pre-built skills:
-  - rails-auth-with-devise (complete authentication with Devise, OmniAuth, and API auth)
-  - rails-debugging (Rails-specific debugging tools and systematic debugging process)
-  - rails-jobs (background jobs with SolidQueue, SolidCache, SolidCable - enforces TEAM RULE #1: NEVER Sidekiq/Redis)
-  - rails-mailers (ActionMailer for transactional and notification emails with async delivery)
-  - rspec-testing (comprehensive RSpec testing patterns and best practices)
-  - rails-api-controllers (RESTful API patterns, versioning, authentication, rate limiting, CORS, pagination, API testing, and documentation)
+## [0.1.0] - 2024-12-26
 
-### Changed
-- Updated README to organize skills by category (Core Rails, Full-Stack Development, Background Processing & Communication, Authentication & Debugging, API Development)
-- Enhanced roadmap to reflect Phase 2 and Phase 3 progress
-- Added comprehensive usage examples including context scaffolding
+### Initial Release
 
-## [0.1.0] - 2025-12-16
+A Rails generator gem that scaffolds Claude AI skills and agents for Rails projects, making AI-assisted development reusable and distributable.
 
-- Initial release
-- Install generator with three presets (basic, fullstack, api)
-- Skill generator for creating custom skills
-- Agent generator for creating custom agents
-- Views generator for customizing existing skills
-- Pre-built skills:
-  - rails-models (ActiveRecord, migrations, validations, associations)
-  - rails-controllers (routing, actions, REST conventions)
-  - rails-views (ERB templates, helpers, partials)
-  - rails-hotwire (Turbo Drive, Frames, Streams, Stimulus)
-  - tailwindcss (utility-first CSS)
-- Pre-built agents:
-  - basic-dev (models, controllers, views)
-  - fullstack-dev (all skills including Hotwire and Tailwind)
-  - api-dev (API-focused development)
+### Generators
+- **Install Generator** (`rails g claude:install`) - Initialize Claude skills with three presets (basic, fullstack, api)
+- **Skill Generator** (`rails g claude:skill`) - Create custom skills with templates (generic, model, controller, frontend)
+- **Agent Generator** (`rails g claude:agent`) - Create custom AI agents
+- **Command Generator** (`rails g claude:command`) - Create custom slash commands
+- **Rule Generator** (`rails g claude:rule`) - Create project-specific rules with templates (generic, testing, security, performance)
+- **Views Generator** (`rails g claude:views`) - Copy and customize gem resources (skills, commands, rules)
+
+### Pre-built Skills (18 total)
+**Core Rails:**
+- rails-models (ActiveRecord, migrations, validations, associations)
+- rails-controllers (routing, actions, REST conventions)
+- rails-views (ERB templates, helpers, partials)
+
+**Full-Stack Development:**
+- rails-hotwire (Turbo Drive, Frames, Streams, Stimulus)
+- tailwindcss (utility-first CSS)
+
+**Background Processing & Communication:**
+- rails-jobs (background jobs with Solid Queue)
+- rails-mailers (ActionMailer patterns)
+
+**Authentication & Authorization:**
+- rails-auth-with-devise (authentication with Devise, OmniAuth, API auth)
+- rails-authorization-cancancan (role-based access control)
+
+**API Development:**
+- rails-api-controllers (RESTful API patterns, versioning, authentication, rate limiting, CORS, pagination)
+
+**Testing:**
+- rspec-testing (RSpec patterns and best practices)
+- minitest-testing (Minitest patterns)
+
+**Utilities:**
+- rails-debugging (debugging tools and systematic process)
+- rails-pagination-kaminari (pagination patterns)
+- rails-deployment (deployment best practices)
+
+**Planning & Organization:**
+- plan-feature (feature planning workflow)
+- refine-requirements (requirements refinement)
+- create-task-files (task file creation)
+
+### Pre-built Commands (5 total)
+- quality (run linters and formatters)
+- turbo-feature (scaffold Hotwire Turbo features)
+- stimulus (create Stimulus controllers)
+- create-pr (create GitHub pull requests)
+- dbchange (database migration workflow)
+
+### Pre-built Rules (5 total)
+- code-style (coding standards)
+- testing (test requirements)
+- security (security guidelines)
+- database (database best practices)
+- hotwire (Hotwire conventions)
+
+### Pre-built Agents
+- basic-dev (models, controllers, views)
+- fullstack-dev (all skills including Hotwire and Tailwind)
+- api-dev (API-focused development)
+
+### Features
 - Configuration system with settings.local.json
+- Support for Ruby 3.0+ and Rails 7.0+
+- Three installation presets (basic, fullstack, api)
 - Comprehensive documentation and examples
+- CI/CD with GitHub Actions

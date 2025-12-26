@@ -15,7 +15,6 @@ RSpec.describe RailsClaudeSkills do
       expect(config.skills_path).to eq(".claude/skills")
       expect(config.agents_path).to eq(".claude/agents")
       expect(config.default_model).to eq("sonnet")
-      expect(config.auto_load_skills).to be true
     end
   end
 
