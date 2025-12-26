@@ -7,7 +7,7 @@ A Rails generator gem that scaffolds Claude AI skills and agents for any Rails p
 
 ## What is This?
 
-`rails_claude_skills` brings Rails generator conventions to Claude AI skills. Just like how Devise provides `rails g devise:install` and Kaminari provides `rails g kaminari:config`, this gem provides generators to scaffold AI context and knowledge for your Rails projects.
+`rails_claude_skills` brings Rails generator conventions to Claude AI skills. This gem provides generators to scaffold AI context and knowledge for your Rails projects.
 
 ### Why Use This Gem?
 
