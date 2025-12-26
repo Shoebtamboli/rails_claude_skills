@@ -488,7 +488,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] Comprehensive README with examples
 - [x] Contributing guidelines with detailed instructions
 - [x] Issue templates (bug report, feature request, question)
-- [x] Pull request template with checklist
 - [x] Code of Conduct
 - [x] CI/CD pipeline (GitHub Actions)
 - [x] Automated release workflow

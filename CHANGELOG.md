@@ -90,6 +90,5 @@ A Rails generator gem that scaffolds Claude AI skills and agents for Rails proje
 - Comprehensive README with usage examples
 - CONTRIBUTING.md with detailed contribution guidelines
 - Issue templates (bug report, feature request, question)
-- Pull request template with comprehensive checklist
 - Code of Conduct (Contributor Covenant 2.1)
 - CHANGELOG following Keep a Changelog format
