@@ -5,7 +5,7 @@
   },
   "agents": {
     "path": ".claude/agents",
-    "default": "<%= options[:preset] %>-dev"
+    "default": "<%= options[:preset] == 'basic' ? 'rails-developer' : "#{options[:preset]}-dev" %>"
   },
   "model": "sonnet",
   "project": "<%= app_name %>",

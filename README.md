@@ -96,11 +96,11 @@ rails g claude:install [options]
 
 **Presets Include:**
 
-| Preset | Skills | Commands | Rules |
-|--------|--------|----------|-------|
-| **basic** | rails-models, rails-controllers, rails-views | dbchange | code-style, testing, database |
-| **fullstack** | basic + rails-hotwire, tailwindcss, rspec-testing | basic + quality, turbo-feature, stimulus, create-pr | basic + hotwire, security |
-| **api** | rails-models, rails-api-controllers, rails-serializers | dbchange, quality | code-style, testing, security, database |
+| Preset | Skills | Commands | Rules | Agent |
+|--------|--------|----------|-------|-------|
+| **basic** | rails-models, rails-controllers, rails-views | dbchange | code-style, testing, database | rails-developer |
+| **fullstack** | basic + rails-hotwire, tailwindcss, rspec-testing | basic + quality, turbo-feature, stimulus, create-pr | basic + hotwire, security | fullstack-dev |
+| **api** | rails-models, rails-api-controllers, rails-serializers | dbchange, quality | code-style, testing, security, database | api-dev |
 
 Each preset includes:
 - ✅ **Skills** for Rails patterns and best practices
@@ -401,8 +401,26 @@ end
 
 ### Per-Project Settings
 
-The gem creates a `.claude/settings.local.json` file:
+The install generator creates a `.claude/settings.local.json` file with configuration based on your chosen preset:
 
+**Example for basic preset:**
+```json
+{
+  "skills": {
+    "autoLoad": true,
+    "path": ".claude/skills"
+  },
+  "agents": {
+    "path": ".claude/agents",
+    "default": "rails-developer"
+  },
+  "model": "sonnet",
+  "project": "MyRailsApp",
+  "rails_version": "7.1.3"
+}
+```
+
+**Example for fullstack preset:**
 ```json
 {
   "skills": {
@@ -414,9 +432,12 @@ The gem creates a `.claude/settings.local.json` file:
     "default": "fullstack-dev"
   },
   "model": "sonnet",
-  "project": "MyRailsApp"
+  "project": "MyRailsApp",
+  "rails_version": "7.1.3"
 }
 ```
+
+The `default` agent is automatically set based on your chosen preset (basic → rails-developer, fullstack → fullstack-dev, api → api-dev).
 
 ## Directory Structure
 
