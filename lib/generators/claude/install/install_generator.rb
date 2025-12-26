@@ -49,19 +49,13 @@ module Claude
 
       def install_basic_preset
         say "Installing basic preset...", :green
-        install_skill("rails-models")
-        install_skill("rails-controllers")
-        install_skill("rails-views")
-        install_command("dbchange")
-        install_rule("code-style")
-        install_rule("testing")
-        install_rule("database")
+        install_basic_skills_and_rules
         create_basic_agent unless options[:skip_agents]
       end
 
       def install_fullstack_preset
         say "Installing fullstack preset...", :green
-        install_basic_preset
+        install_basic_skills_and_rules
         install_skill("rails-hotwire")
         install_skill("tailwindcss")
         install_skill("rspec-testing")
@@ -72,6 +66,16 @@ module Claude
         install_rule("hotwire")
         install_rule("security")
         create_fullstack_agent unless options[:skip_agents]
+      end
+
+      def install_basic_skills_and_rules
+        install_skill("rails-models")
+        install_skill("rails-controllers")
+        install_skill("rails-views")
+        install_command("dbchange")
+        install_rule("code-style")
+        install_rule("testing")
+        install_rule("database")
       end
 
       def install_api_preset
