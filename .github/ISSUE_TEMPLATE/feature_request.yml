@@ -1,0 +1,129 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for Rails Claude Skills
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! We appreciate your ideas for improving Rails Claude Skills.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Before submitting, please verify the following
+      options:
+        - label: I have searched existing issues and discussions to make sure this hasn't been suggested
+          required: true
+        - label: This feature would be useful to the wider Rails community, not just my specific use case
+          required: true
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature are you suggesting?
+      options:
+        - New Skill (e.g., for a popular gem or Rails pattern)
+        - New Command (slash command for common workflows)
+        - New Rule (project guidelines or conventions)
+        - New Generator (entirely new generator type)
+        - Enhancement to Existing Feature
+        - Documentation Improvement
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: I'm frustrated when I need to... OR It would be helpful if...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see
+      placeholder: |
+        I would like to have a skill/command/rule that...
+
+        Example usage:
+        ```bash
+        rails g claude:skill devise-authentication
+        # or
+        /my-command argument
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or features you've considered
+      placeholder: I considered using... but that doesn't work because...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples from Other Tools
+      description: Are there similar features in other gems, tools, or frameworks?
+      placeholder: Similar to how gem X handles... or inspired by feature Y in...
+
+  - type: dropdown
+    id: preset
+    attributes:
+      label: Which Preset Should Include This?
+      description: If this is a new skill/command/rule, which preset(s) should include it by default?
+      multiple: true
+      options:
+        - Basic Preset
+        - Fullstack Preset
+        - API Preset
+        - None (users can add manually)
+        - Not Applicable
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Describe specific scenarios where this feature would be helpful
+      placeholder: |
+        1. When building a multi-tenant SaaS app...
+        2. When implementing authentication...
+        3. When deploying to production...
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: How would this feature benefit Rails developers using Claude Code?
+      placeholder: |
+        - Saves time by...
+        - Reduces errors when...
+        - Improves code quality by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, code examples, or mockups about the feature
+      placeholder: Any additional information that would help us understand your request
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Would you like to implement this feature?
+      description: If you're interested in contributing this feature yourself, let us know!
+      options:
+        - label: I'd like to implement this feature and submit a PR
+          required: false
