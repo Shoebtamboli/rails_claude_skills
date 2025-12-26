@@ -55,7 +55,7 @@ templates = [
   'lib/generators/claude/install/templates/settings.local.json.tt',
   'lib/generators/claude/install/templates/README.md.tt',
   'lib/generators/claude/install/templates/USAGE',
-  'lib/generators/claude/install/templates/agents/basic-dev.md.tt',
+  'lib/generators/claude/install/templates/agents/rails-developer.md.tt',
   'lib/generators/claude/install/templates/agents/fullstack-dev.md.tt',
   'lib/generators/claude/install/templates/agents/api-dev.md.tt',
   'lib/generators/claude/skill/templates/SKILL.md.tt',

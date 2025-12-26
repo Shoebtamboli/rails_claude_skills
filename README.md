@@ -64,7 +64,7 @@ your-rails-app/
 │   │   ├── testing.md
 │   │   └── database.md
 │   └── agents/           # AI agent definitions
-│       └── basic-dev.md
+│       └── rails-developer.md
 ```
 
 ### 2. Use with Claude Code
@@ -467,39 +467,48 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 
 ## Roadmap
 
-### Phase 1: MVP (v0.1.0) ✅
-- [x] Gem structure and setup
-- [x] Install generator with basic preset
-- [x] 5 core skills (models, controllers, views, hotwire, tailwindcss)
-- [x] Agent generator
-- [x] Skill generator
-- [x] Views generator
-- [x] Basic documentation
+### Current: Preparing for Initial Release (v0.1.0) 🚀
 
-### Phase 2: Enhancement (v0.2.0) ✅ Complete
-- [x] RSpec testing skill with comprehensive patterns
-- [x] Authentication skill (rails-auth-with-devise)
-- [x] Authorization skill (rails-authorization-cancancan)
-- [x] Pagination skill (rails-pagination-kaminari)
-- [x] Background jobs skill (rails-jobs with SolidQueue)
-- [x] Email delivery skill (rails-mailers)
-- [x] Debugging tools skill (rails-debugging)
-- [x] API controller patterns skill (rails-api-controllers)
-- [x] Minitest testing skill
-- [x] Rails deployment skill
-- [x] Planning and organization skills (plan-feature, refine-requirements, create-task-files)
-- [x] Command generator for custom slash commands
+**Core Features (Complete)**
+- [x] Gem structure and configuration system
+- [x] Install generator with 3 presets (basic, fullstack, api)
+- [x] Skill generator for custom skills
+- [x] Agent generator for custom agents
+- [x] Command generator for slash commands
 - [x] Rule generator for project guidelines
-- [x] Pre-built commands library (5 commands)
-- [x] Pre-built rules library (5 rules)
+- [x] Views generator to customize resources
 
-### Phase 3: Ecosystem (v0.3.0) 📋 Planned
-- [x] Integration with popular gems (Devise, CanCanCan, Kaminari)
-- [ ] Serialization skill (rails-serializers)
-- [ ] Integration with more gems (Pundit, ActiveAdmin, etc.)
-- [ ] Skill dependency resolution
-- [ ] Community skill repository
-- [ ] Rails version detection and compatibility
+**Content Library (Complete)**
+- [x] 18 pre-built skills covering Rails, testing, authentication, background jobs, and more
+- [x] 5 pre-built commands (quality, turbo-feature, dbchange, stimulus, create-pr)
+- [x] 5 pre-built rules (code-style, testing, security, database, hotwire)
+- [x] 3 pre-configured agents (rails-developer, fullstack-dev, api-dev)
+
+**Documentation & Community (Complete)**
+- [x] Comprehensive README with examples
+- [x] Contributing guidelines with detailed instructions
+- [x] Issue templates (bug report, feature request, question)
+- [x] Code of Conduct
+- [x] CI/CD pipeline (GitHub Actions)
+- [x] Automated release workflow
+
+**Status**: Ready for publication to RubyGems.org
+
+### Future: Ecosystem Growth (v0.2.0+) 📋
+
+**Planned Features**
+- [ ] Serialization skill (rails-serializers for JSON:API, ActiveModel::Serializers)
+- [ ] Additional popular gem integrations (Pundit, ActiveAdmin, Sidekiq, etc.)
+- [ ] Skill dependency resolution and auto-installation
+- [ ] Community skill repository and sharing
+- [ ] Rails version detection and compatibility warnings
+- [ ] Skill versioning and upgrade paths
+- [ ] Interactive skill browser/explorer
+- [ ] Skill testing framework
+- [ ] Skill metrics and analytics
+
+**Community Contributions Welcome**
+We welcome contributions of new skills, commands, and rules! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
