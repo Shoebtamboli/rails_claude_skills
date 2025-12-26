@@ -165,42 +165,6 @@ rails g claude:agent frontend-dev \
   --color=purple
 ```
 
-### Context Generator
-
-Scaffold a complete domain-specific setup with pre-configured skills, agents, and example models:
-
-```bash
-rails g claude:context CONTEXT_NAME [options]
-```
-
-**Options:**
-- `--skip-models` - Don't generate model examples
-- `--skip-agents` - Don't create context-specific agents
-
-**Available Contexts:**
-
-| Context | Description | Skills Included |
-|---------|-------------|-----------------|
-| **ecommerce** | E-commerce store | Products, cart, orders, payments |
-| **saas** | SaaS application | Subscriptions, billing, multi-tenancy, teams |
-| **blog** | Blog platform | Posts, comments, tags, authors |
-| **social** | Social network | Users, posts, follows, feeds |
-| **api** | JSON API backend | API controllers, authentication, versioning |
-| **marketplace** | Two-sided marketplace | Buyers, sellers, transactions |
-
-**Examples:**
-
-```bash
-# Set up e-commerce context
-rails g claude:context ecommerce
-
-# Set up SaaS context without model examples
-rails g claude:context saas --skip-models
-
-# Set up API backend context
-rails g claude:context api
-```
-
 ### Command Generator
 
 Create custom slash commands for common workflows:
@@ -402,30 +366,7 @@ rails g claude:views rails-api-controllers
 rails g claude:views rails-pagination-kaminari
 ```
 
-### Example 4: Quick Start with Context Scaffolding
-
-```bash
-# Starting a SaaS project? Use the SaaS context
-rails new my_saas_app
-cd my_saas_app
-
-# Add the gem
-echo "gem 'rails_claude_skills', group: :development" >> Gemfile
-bundle install
-
-# Scaffold complete SaaS context
-rails g claude:context saas
-
-# This creates:
-# - All necessary skills (models, auth, jobs, mailers)
-# - saas-dev agent optimized for SaaS development
-# - Example models (Account, Subscription, Plan, Membership)
-# - Documentation with implementation guide
-
-# Now you have everything to build a SaaS app!
-```
-
-### Example 5: Custom Domain Skills
+### Example 4: Custom Domain Skills
 
 ```bash
 # You have specific business logic patterns
@@ -452,12 +393,9 @@ RailsClaudeSkills.configure do |config|
   # Directory paths
   config.skills_path = ".claude/skills"
   config.agents_path = ".claude/agents"
-  
+
   # Default model
   config.default_model = "sonnet"
-  
-  # Auto-load all skills
-  config.auto_load_skills = true
 end
 ```
 
@@ -556,13 +494,11 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/shoebt
 - [x] Pre-built rules library (5 rules)
 
 ### Phase 3: Ecosystem (v0.3.0) 📋 Planned
-- [x] Context generator for domain-specific scaffolding (ecommerce, saas, blog, social, api, marketplace)
 - [x] Integration with popular gems (Devise, CanCanCan, Kaminari)
 - [ ] Serialization skill (rails-serializers)
 - [ ] Integration with more gems (Pundit, ActiveAdmin, etc.)
 - [ ] Skill dependency resolution
 - [ ] Community skill repository
-- [ ] Plugin system for third-party contexts
 - [ ] Rails version detection and compatibility
 
 ## License

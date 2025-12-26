@@ -10,7 +10,6 @@ module RailsClaudeSkills
       require "generators/claude/agent/agent_generator"
       require "generators/claude/command/command_generator"
       require "generators/claude/rule/rule_generator"
-      require "generators/claude/context/context_generator"
       require "generators/claude/views/views_generator"
     end
   end

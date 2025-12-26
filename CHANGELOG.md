@@ -12,9 +12,7 @@ A Rails generator gem that scaffolds Claude AI skills and agents for Rails proje
 - **Agent Generator** (`rails g claude:agent`) - Create custom AI agents
 - **Command Generator** (`rails g claude:command`) - Create custom slash commands
 - **Rule Generator** (`rails g claude:rule`) - Create project-specific rules with templates (generic, testing, security, performance)
-- **Context Generator** (`rails g claude:context`) - Scaffold complete domain setups
-  - Pre-built contexts: ecommerce, saas (with full templates, agents, and example models)
-- **Views Generator** (`rails g claude:views`) - Copy and customize gem resources
+- **Views Generator** (`rails g claude:views`) - Copy and customize gem resources (skills, commands, rules)
 
 ### Pre-built Skills (18 total)
 **Core Rails:**
