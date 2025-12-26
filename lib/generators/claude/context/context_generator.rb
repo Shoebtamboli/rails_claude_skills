@@ -23,28 +23,6 @@ module Claude
           skills: %w[rails-models rails-controllers rails-views rails-auth-with-devise
                      rails-jobs rails-mailers],
           agent: "saas-dev"
-        },
-        "blog" => {
-          description: "Blog platform with posts, comments, and tags",
-          skills: %w[rails-models rails-controllers rails-views rails-hotwire tailwindcss],
-          agent: "blog-dev"
-        },
-        "social" => {
-          description: "Social network with users, posts, follows, and feeds",
-          skills: %w[rails-models rails-controllers rails-views rails-hotwire
-                     rails-jobs rails-mailers],
-          agent: "social-dev"
-        },
-        "api" => {
-          description: "JSON API backend with authentication and versioning",
-          skills: %w[rails-models rails-api-controllers rails-auth-with-devise rspec-testing],
-          agent: "api-dev"
-        },
-        "marketplace" => {
-          description: "Two-sided marketplace with buyers, sellers, and transactions",
-          skills: %w[rails-models rails-controllers rails-views rails-auth-with-devise
-                     rails-jobs rails-mailers],
-          agent: "marketplace-dev"
         }
       }.freeze
 

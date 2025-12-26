@@ -16,13 +16,12 @@ module RailsClaudeSkills
   end
 
   class Configuration
-    attr_accessor :skills_path, :agents_path, :default_model, :auto_load_skills
+    attr_accessor :skills_path, :agents_path, :default_model
 
     def initialize
       @skills_path = ".claude/skills"
       @agents_path = ".claude/agents"
       @default_model = "sonnet"
-      @auto_load_skills = true
     end
   end
 end
